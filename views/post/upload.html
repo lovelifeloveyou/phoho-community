@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title><%= title + ' ' + config.title %></title>
+    <meta name="description" content="<%= config.description %>" />
+    <meta name="keywords" content="<%= config.keywords %>" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no,width=device-width">
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="shortcut icon" href="/public/favicon.ico" type="image/x-icon" />
+
+    <%-
+        Loader('/public/css/upload_index.css')
+        .css('/public/css/default.css')
+        .css('/public/css/header.css')
+        .css('/public/css/upload.css')
+        .css('/public/css/head_phone.css')
+        .css('/public/css/footer.css')
+        .done(assets, config.static_host, config.mini_assets)
+    %>
+
+    <script src="http://apps.bdimg.com/libs/jquery/1.8.3/jquery.min.js"></script>
+    <%-
+        Loader('/public/js/upload_index.js')
+        .js('/public/js/hint.js')
+        .js('/public/js/api.js')
+        .js('/public/js/head_phone.js')
+        .done(assets, config.static_host, config.mini_assets)
+    %>
+</head>
+<body>
+<%- include('../header.html', {user: user}) %>
+
+<div class="upload">
+    <div class="content">
+        <div class="up-head">
+            <i class="iconfont">&#xe616;</i>发布新图片
+        </div>
+        <div class="up-form">
+            <div class="group clearfix">
+                <p>图片标题</p>
+                <textarea id="title" placeholder="投稿须知：敏感政治内容，黄暴内容的帖子，将会被直接删除。站长不想被请去喝茶 (┬＿┬)"></textarea>
+                <p class="hint">一个描述性或有趣的标题会吸引更多的投票和分享还可以输入 100 字</p>
+            </div>
+            <div class="group clearfix">
+                <p>上传图片</p>
+                <form  id="form-img" action="/api/post/upload" method="post" target="iframe-img" enctype="multipart/form-data">
+                    <input id="action" name="avatar" type="file">
+                    <iframe style="display: none;" id="iframe-img" name="iframe-img" ></iframe>
+                    <i class="bn">+</i>
+                    <span class="hint">支持的格式为: JPEG, PNG，GIF 大小限制: 3MB内。</span>
+                </form>
+                <img src="" alt="" class="show-img" onclick="inputFile()">
+            </div>
+            <div class="upload-bnt">上传</div>
+        </div>
+
+    </div>
+    <div class="side">
+        <h2>内涵图投稿</h2>
+        <h3>1. 不准飚车,不准飚车,不准飚车</h3>
+        <h3>2. 标题违规的帖子将会直接删除</h3>
+        <h3>3. 拒绝有水印和非原创的帖子</h3>
+        <h3>4. 上古时期的图就不要发了</h3>
+        <h3>5. 禁止发布一些不可描述的东西</h3>
+        <h3>6. 饺子韭菜馅的好吃</h3>
+        <h3>7. 发表帖子即同意以上条款</h3>
+    </div>
+</div>
+
+<%- include('../footer.html') %>
+<script type="text/javascript">
+
+	// 上传帖子图片
+    uploadPostImg($('#action'),$('.show-img'));
+
+    // 上传帖子
+    $('.upload-bnt').on('click', function(){uploadPost($('#title').val(), $('.show-img').attr('src'))});
+
+    // 点击已经上传了的图片时候弹出图片选择框
+	function inputFile() {
+		return $('#action').click();
+    }
+
+</script>
+</body>
+</html>
